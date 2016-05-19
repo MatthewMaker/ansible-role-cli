@@ -1,5 +1,18 @@
 ---
 
+
+- name: register whether we are also a logged-in console user
+  shell: /usr/bin/stat -f "%Su" /dev/console
+  register: terminal_console_user
+  changed_when: False
+  sudo: no
+ 
+- debug: var=terminal_console_user.stdout
+  sudo: no
+
+- debug: var=ansible_ssh_user
+  sudo: no
+
 - name: register the current terminal profile
   shell: defaults read "com.apple.Terminal" "Default Window Settings"
   register: terminal_profile_result
@@ -13,7 +26,7 @@
 
 - name: install the terminal profile
   shell: open /tmp/base16-eighties.dark.256.terminal
-  when: terminal_profile_result.stdout != "base16-eighties.dark.256"
+  when: terminal_profile_result.stdout != "base16-eighties.dark.256" and terminal_console_user.stdout == ansible_ssh_user
 
 - name: set the Default Window Settings
   osx_defaults:
