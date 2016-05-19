@@ -31,7 +31,7 @@
 
 - name: set git username
   shell: git config --global user.name "{{git_user_name}}"
-  when: git_user_email_result.stdout != "{{git_user_name}}"
+  when: git_user_name_result.stdout != "{{git_user_name}}"
 
 - name: set git user email
   shell: git config --global user.email "{{git_user_email}}"
