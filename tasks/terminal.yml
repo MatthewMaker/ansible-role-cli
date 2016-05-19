@@ -10,8 +10,7 @@
 - debug: var=terminal_console_user.stdout
   become: false
 
-- debug: var=ansible_ssh_user
-  become: false
+- debug: var=ansible_user_id
 
 - name: register the current terminal profile
   shell: defaults read "com.apple.Terminal" "Default Window Settings"
@@ -26,7 +25,7 @@
 
 - name: install the terminal profile
   shell: open /tmp/base16-eighties.dark.256.terminal
-  when: terminal_profile_result.stdout != "base16-eighties.dark.256" and terminal_console_user.stdout == ansible_ssh_user
+  when: terminal_profile_result.stdout != "base16-eighties.dark.256" and terminal_console_user.stdout != ansible_user_id
 
 - name: set the Default Window Settings
   osx_defaults:
