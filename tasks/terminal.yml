@@ -5,13 +5,13 @@
   shell: /usr/bin/stat -f "%Su" /dev/console
   register: terminal_console_user
   changed_when: False
-  sudo: no
+  become: false
  
 - debug: var=terminal_console_user.stdout
-  sudo: no
+  become: false
 
 - debug: var=ansible_ssh_user
-  sudo: no
+  become: false
 
 - name: register the current terminal profile
   shell: defaults read "com.apple.Terminal" "Default Window Settings"
